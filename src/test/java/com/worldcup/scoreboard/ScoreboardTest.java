@@ -64,7 +64,6 @@ public class ScoreboardTest {
                 .withMessage("One of the given teams is already playing");
     }
 
-    @Ignore
     @Test
     public void test_finishGame_successCase() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -75,7 +74,6 @@ public class ScoreboardTest {
                 .doesNotContainKey(Game.builder().homeTeam(MEXICO).awayTeam(CANADA).build());
     }
 
-    @Ignore
     @Test
     public void test_finishGame_successCase_onlyHomeTeam() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -86,7 +84,6 @@ public class ScoreboardTest {
                 .doesNotContainKey(Game.builder().homeTeam(MEXICO).awayTeam(CANADA).build());
     }
 
-    @Ignore
     @Test
     public void test_finishGame_successCase_onlyAwayTeam() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -97,7 +94,6 @@ public class ScoreboardTest {
                 .doesNotContainKey(Game.builder().homeTeam(MEXICO).awayTeam(CANADA).build());
     }
 
-    @Ignore
     @Test
     public void test_finishGame_bothTeamsNull() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -108,7 +104,6 @@ public class ScoreboardTest {
                 .withMessage("Either home team or away team is not supposed be null");
     }
 
-    @Ignore
     @Test
     public void test_finishGame_nonExistingGame() {
         Scoreboard scoreboard = new Scoreboard();
