@@ -1,11 +1,13 @@
 package com.worldcup.scoreboard;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.worldcup.scoreboard.exception.ScoreboardException;
@@ -29,7 +31,7 @@ public class Scoreboard {
         }
 
         games.put(Game.builder().homeTeam(homeTeam).awayTeam(awayTeam).build(),
-                Score.builder().start(LocalDateTime.now()).build());
+                Score.builder().start(Instant.now()).build());
     }
 
     public void finishGame(String homeTeam, String awayTeam) throws ScoreboardException {
@@ -101,7 +103,12 @@ public class Scoreboard {
     }
 
     public List<String> getSummary() {
-        return null;
+        Comparator<Map.Entry<Game, Score>> scoreComparator = Comparator
+                .comparingInt(entry -> entry.getValue().getTotalScore());
+        Comparator<Map.Entry<Game, Score>> timeComparator = Comparator.comparing(entry -> entry.getValue().getStart());
+
+        return games.entrySet().stream().sorted(scoreComparator.reversed().thenComparing(timeComparator.reversed()))
+                .map(this::gameScoreToString).collect(Collectors.toList());
     }
 
     public Map<Game, Score> getGames() {
@@ -123,5 +130,11 @@ public class Scoreboard {
         if (awayScore < score.getAwayScore()) {
             throw new ScoreboardException("New score can't be lower than the old score");
         }
+    }
+
+    private String gameScoreToString(Map.Entry<Game, Score> entry) {
+        return String.join(" - ",
+                entry.getKey().getHomeTeam() + " " + entry.getValue().getHomeScore(),
+                entry.getKey().getAwayTeam() + " " + entry.getValue().getAwayScore());
     }
 }

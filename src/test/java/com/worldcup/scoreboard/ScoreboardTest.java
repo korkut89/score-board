@@ -5,7 +5,6 @@ import java.util.List;
 import com.worldcup.scoreboard.exception.ScoreboardException;
 import com.worldcup.scoreboard.model.Game;
 import org.assertj.core.api.Assertions;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ScoreboardTest {
@@ -212,14 +211,17 @@ public class ScoreboardTest {
                 .withMessage("New score can't be lower than the old score");
     }
 
-    @Ignore
     @Test
-    public void test_getSummary() throws ScoreboardException{
+    public void test_getSummary() throws Exception{
         Scoreboard scoreboard = new Scoreboard();
         scoreboard.startGame(MEXICO, CANADA);
+        Thread.sleep(1);
         scoreboard.startGame(SPAIN, BRAZIL);
+        Thread.sleep(1);
         scoreboard.startGame(GERMANY, FRANCE);
+        Thread.sleep(1);
         scoreboard.startGame(URUGUAY, ITALY);
+        Thread.sleep(1);
         scoreboard.startGame(ARGENTINA, AUSTRALIA);
 
         scoreboard.updateScore(MEXICO, CANADA, 0, 5);
@@ -231,6 +233,6 @@ public class ScoreboardTest {
         List<String> summary = scoreboard.getSummary();
         Assertions.assertThat(summary).isNotEmpty();
         Assertions.assertThat(summary).containsExactly("Uruguay 6 - Italy 6", "Spain 10 - Brazil 2",
-                "Mexico 0 - CANADA 5", "Argentina 3 - Australia 1", "Germany 2 - France 2");
+                "Mexico 0 - Canada 5", "Argentina 3 - Australia 1", "Germany 2 - France 2");
     }
 }

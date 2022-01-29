@@ -1,6 +1,6 @@
 package com.worldcup.scoreboard.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,7 +15,7 @@ public class Score {
     private int awayScore;
 
     @Setter(value = AccessLevel.PRIVATE)
-    private LocalDateTime start;
+    private Instant start;
 
     public int getTotalScore() {
         return homeScore + awayScore;
