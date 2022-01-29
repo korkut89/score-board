@@ -59,14 +59,45 @@ public class Scoreboard {
     }
 
     public void updateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) throws ScoreboardException {
+        if (Objects.isNull(homeTeam) || Objects.isNull(awayTeam)) {
+            throw new ScoreboardException("Team names are not supposed be null");
+        }
+
+        Game game = Game.builder().homeTeam(homeTeam).awayTeam(awayTeam).build();
+        Score score = games.get(game);
+        if (Objects.isNull(score)) {
+            throw new ScoreboardException("Given game is not existent");
+        }
+        validateNewScores(score, homeScore, awayScore);
+
         updateScoreForHome(homeTeam, homeScore);
         updateScoreForAway(awayTeam, awayScore);
     }
 
     public void updateScoreForHome(String team, int score) throws ScoreboardException {
+        if (Objects.isNull(team)) {
+            throw new ScoreboardException("Team names are not supposed be null");
+        }
+
+        Game game = games.keySet().stream().filter(g -> g.getHomeTeam().equals(team)).findAny()
+                .orElseThrow(() -> new ScoreboardException("Given home team is not existent"));
+        Score gameScore = games.get(game);
+        validateHomeScore(gameScore, score);
+
+        gameScore.setHomeScore(score);
     }
 
     public void updateScoreForAway(String team, int score) throws ScoreboardException {
+        if (Objects.isNull(team)) {
+            throw new ScoreboardException("Team names are not supposed be null");
+        }
+
+        Game game = games.keySet().stream().filter(g -> g.getAwayTeam().equals(team)).findAny()
+                .orElseThrow(() -> new ScoreboardException("Given away team is not existent"));
+        Score gameScore = games.get(game);
+        validateAwayScore(games.get(game), score);
+
+        gameScore.setAwayScore(score);
     }
 
     public List<String> getSummary() {
@@ -75,5 +106,22 @@ public class Scoreboard {
 
     public Map<Game, Score> getGames() {
         return Collections.unmodifiableMap(games);
+    }
+
+    private void validateNewScores(Score score, int homeScore, int awayScore) throws ScoreboardException {
+        validateHomeScore(score, homeScore);
+        validateAwayScore(score, awayScore);
+    }
+
+    private void validateHomeScore(Score score, int homeScore) throws ScoreboardException {
+        if (homeScore < score.getHomeScore()) {
+            throw new ScoreboardException("New score can't be lower than the old score");
+        }
+    }
+
+    private void validateAwayScore(Score score, int awayScore) throws ScoreboardException {
+        if (awayScore < score.getAwayScore()) {
+            throw new ScoreboardException("New score can't be lower than the old score");
+        }
     }
 }

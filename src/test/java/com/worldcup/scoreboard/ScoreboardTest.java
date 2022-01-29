@@ -113,7 +113,6 @@ public class ScoreboardTest {
                 .withMessage("Given game is not existent");
     }
 
-    @Ignore
     @Test
     public void test_updateScore_successCase() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -130,7 +129,6 @@ public class ScoreboardTest {
                 });
     }
 
-    @Ignore
     @Test
     public void test_updateScore_successCase_homeScore() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -147,7 +145,6 @@ public class ScoreboardTest {
                 });
     }
 
-    @Ignore
     @Test
     public void test_updateScore_successCase_awayScore() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -164,7 +161,16 @@ public class ScoreboardTest {
                 });
     }
 
-    @Ignore
+    @Test
+    public void test_updateScore_homeAndAwayTeamsNull() throws ScoreboardException {
+        Scoreboard scoreboard = new Scoreboard();
+        scoreboard.startGame(MEXICO, CANADA);
+
+        Assertions.assertThatExceptionOfType(ScoreboardException.class)
+                .isThrownBy(() -> scoreboard.updateScore(null, null, 1, 1))
+                .withMessage("Team names are not supposed be null");
+    }
+
     @Test
     public void test_updateScore_nonExistentGame() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -175,7 +181,6 @@ public class ScoreboardTest {
                 .withMessage("Given game is not existent");
     }
 
-    @Ignore
     @Test
     public void test_updateScore_homeScore_nonExistentGame() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -183,10 +188,9 @@ public class ScoreboardTest {
 
         Assertions.assertThatExceptionOfType(ScoreboardException.class)
                 .isThrownBy(() -> scoreboard.updateScoreForHome(SPAIN, 1))
-                .withMessage("Given team is not existent");
+                .withMessage("Given home team is not existent");
     }
 
-    @Ignore
     @Test
     public void test_updateScore_awayScore_nonExistentGame() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -194,10 +198,9 @@ public class ScoreboardTest {
 
         Assertions.assertThatExceptionOfType(ScoreboardException.class)
                 .isThrownBy(() -> scoreboard.updateScoreForAway(BRAZIL, 1))
-                .withMessage("Given team is not existent");
+                .withMessage("Given away team is not existent");
     }
 
-    @Ignore
     @Test
     public void test_updateScore_scoreGoesLower() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
