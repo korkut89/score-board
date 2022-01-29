@@ -21,7 +21,6 @@ public class ScoreboardTest {
     private static final String ARGENTINA = "Argentina";
     private static final String AUSTRALIA = "Australia";
 
-    @Ignore
     @Test
     public void test_startGame_successCase() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -37,7 +36,6 @@ public class ScoreboardTest {
                 });
     }
 
-    @Ignore
     @Test
     public void test_startGame_homeTeamIsNull() {
         Scoreboard scoreboard = new Scoreboard();
@@ -47,7 +45,6 @@ public class ScoreboardTest {
                 .withMessage("Home team is not supposed to be null");
     }
 
-    @Ignore
     @Test
     public void test_startGame_awayTeamIsNull() {
         Scoreboard scoreboard = new Scoreboard();
@@ -57,7 +54,6 @@ public class ScoreboardTest {
                 .withMessage("Away team is not supposed to be null");
     }
 
-    @Ignore
     @Test
     public void test_startGame_OneOfTheTeamsAlreadyPlaying() throws ScoreboardException {
         Scoreboard scoreboard = new Scoreboard();
@@ -65,7 +61,7 @@ public class ScoreboardTest {
 
         Assertions.assertThatExceptionOfType(ScoreboardException.class)
                 .isThrownBy(() -> scoreboard.startGame(SPAIN, MEXICO))
-                .withMessage("Team {} is already playing", MEXICO);
+                .withMessage("One of the given teams is already playing");
     }
 
     @Ignore
