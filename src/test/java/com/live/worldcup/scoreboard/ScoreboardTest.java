@@ -24,10 +24,9 @@ class ScoreboardTest {
 
     @BeforeEach
     public void setUp() {
-        Scoreboard.resetGames();
+        Scoreboard.reset();
     }
 
-    @Disabled
     @Test
     void test_startGame_Teams_successCase() throws ScoreBoardException {
         Scoreboard.startGame(createHomeTeam(MEXICO), createAwayTeam(CANADA));
@@ -42,7 +41,6 @@ class ScoreboardTest {
         });
     }
 
-    @Disabled
     @Test
     void test_startGame_TeamNames_successCase() throws ScoreBoardException {
         Scoreboard.startGame(MEXICO, CANADA);
@@ -57,24 +55,21 @@ class ScoreboardTest {
         });
     }
 
-    @Disabled
     @Test
     void test_startGame_TeamIsNull() {
         assertThatThrownBy(() -> Scoreboard.startGame(createHomeTeam(MEXICO), null))
                 .isInstanceOf(ScoreBoardException.class);
     }
 
-    @Disabled
     @Test
     void test_startGame_TeamNameIsEmpty() {
         assertThatThrownBy(() -> Scoreboard.startGame(MEXICO, ""))
                 .isInstanceOf(ScoreBoardException.class);
     }
 
-    @Disabled
     @Test
     void test_startGame_OneOfTheTeamsAlreadyPlaying() throws ScoreBoardException {
-        Scoreboard.startGame(MEXICO, SPAIN);
+        Scoreboard.startGame(SPAIN, MEXICO);
         assertThatThrownBy(() -> Scoreboard.startGame(MEXICO, CANADA))
                 .isInstanceOf(ScoreBoardException.class);
     }
@@ -82,7 +77,7 @@ class ScoreboardTest {
     @Disabled
     @Test
     void test_startGame_NewGameForTheExistingTeamAfterPreviousGameFinished() throws ScoreBoardException {
-        Scoreboard.startGame(MEXICO, SPAIN);
+        Scoreboard.startGame(SPAIN, MEXICO);
         Scoreboard.finishGame(Scoreboard.getGames().first());
         Scoreboard.startGame(MEXICO, CANADA);
 
@@ -187,6 +182,6 @@ class ScoreboardTest {
     }
 
     private Team createTeam(String name, Side side) {
-        return Team.builder().name(name).playing(true).side(side).build();
+        return Team.builder().name(name).side(side).build();
     }
 }
