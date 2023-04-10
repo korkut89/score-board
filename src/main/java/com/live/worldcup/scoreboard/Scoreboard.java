@@ -46,7 +46,18 @@ public class Scoreboard {
                 .build());
     }
 
-    public static void updateScore(Game game, int homeScore, int awayScore) throws ScoreBoardException {}
+    public static void updateScore(Game game, int homeScore, int awayScore) throws ScoreBoardException {
+        if (!games.contains(game)) {
+            throw new ScoreBoardException("Game is either not existent or finished");
+        } else if (homeScore < game.getHomeTeam().getScore() || awayScore < game.getAwayTeam().getScore()) {
+            throw new ScoreBoardException("New scores can't be lower than the old scores");
+        }
+
+        games.remove(game);
+        game.getHomeTeam().setScore(homeScore);
+        game.getAwayTeam().setScore(awayScore);
+        games.add(game);
+    }
 
     public static void finishGame(Game game) throws ScoreBoardException {}
 
@@ -60,7 +71,7 @@ public class Scoreboard {
     }
 
     private static SortedSet<Game> createGameSet() {
-        var comparator = Comparator.comparingInt(Game::getTotalScore).reversed()
+        var comparator = Comparator.comparingInt(Game::getTotalScore)
                 .thenComparing(Game::getStartTime).reversed();
 
         return new TreeSet<>(comparator);

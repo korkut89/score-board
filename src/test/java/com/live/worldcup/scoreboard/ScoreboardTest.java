@@ -91,7 +91,6 @@ class ScoreboardTest {
         });
     }
 
-    @Disabled
     @Test
     void test_updateScore_successCase() throws ScoreBoardException {
         Scoreboard.startGame(MEXICO, CANADA);
@@ -118,7 +117,6 @@ class ScoreboardTest {
                 .isInstanceOf(ScoreBoardException.class);
     }
 
-    @Disabled
     @Test
     void test_updateScore_scoreGoesLower() throws ScoreBoardException {
         Scoreboard.startGame(MEXICO, CANADA);
@@ -151,7 +149,7 @@ class ScoreboardTest {
 
     @Disabled
     @Test
-    void test_getSummary() throws ScoreBoardException, InterruptedException {
+    void test_getSummary() throws ScoreBoardException {
         Scoreboard.startGame(MEXICO, CANADA);
         var game1 = Scoreboard.getGames().first();
         Scoreboard.startGame(SPAIN, BRAZIL);
