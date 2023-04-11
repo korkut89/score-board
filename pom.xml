@@ -16,6 +16,7 @@
         <junit.version>5.9.2</junit.version>
         <assertj.version>3.24.2</assertj.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <maven-surefire.version>3.0.0-M9</maven-surefire.version>
     </properties>
 
     <dependencies>
@@ -52,6 +53,11 @@
                     <source>17</source>
                     <target>17</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire.version}</version>
             </plugin>
         </plugins>
     </build>

@@ -19,4 +19,9 @@ public class Game {
     public int getTotalScore() {
         return homeTeam.getScore() + awayTeam.getScore();
     }
+
+    @Override
+    public String toString() {
+        return homeTeam.toString() + " - " + awayTeam.toString();
+    }
 }

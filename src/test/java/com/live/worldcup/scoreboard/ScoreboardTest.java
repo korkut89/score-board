@@ -3,7 +3,6 @@ package com.live.worldcup.scoreboard;
 import com.live.worldcup.scoreboard.exception.ScoreBoardException;
 import com.live.worldcup.scoreboard.model.Team;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -134,7 +133,6 @@ class ScoreboardTest {
                 .isInstanceOf(ScoreBoardException.class);
     }
 
-    @Disabled
     @Test
     void test_getSummary() throws ScoreBoardException {
         Scoreboard.startGame(MEXICO, CANADA);

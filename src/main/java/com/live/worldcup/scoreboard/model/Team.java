@@ -19,4 +19,9 @@ public class Team {
         setScore(0);
         setPlaying(false);
     }
+
+    @Override
+    public String toString() {
+        return name + " " + score;
+    }
 }

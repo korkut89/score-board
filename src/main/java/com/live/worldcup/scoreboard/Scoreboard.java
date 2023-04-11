@@ -69,7 +69,7 @@ public class Scoreboard {
     }
 
     public List<String> getSummary() {
-        return Collections.emptyList();
+        return games.stream().map(Game::toString).toList();
     }
 
     public void reset() {
