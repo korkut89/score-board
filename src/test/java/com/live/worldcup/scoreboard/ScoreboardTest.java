@@ -1,7 +1,6 @@
 package com.live.worldcup.scoreboard;
 
 import com.live.worldcup.scoreboard.exception.ScoreBoardException;
-import com.live.worldcup.scoreboard.model.Side;
 import com.live.worldcup.scoreboard.model.Team;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -29,14 +28,12 @@ class ScoreboardTest {
 
     @Test
     void test_startGame_Teams_successCase() throws ScoreBoardException {
-        Scoreboard.startGame(createHomeTeam(MEXICO), createAwayTeam(CANADA));
+        Scoreboard.startGame(createTeam(MEXICO), createTeam(CANADA));
 
         assertThat(Scoreboard.getGames()).anySatisfy(game -> {
             assertThat(game.getHomeTeam().getName()).isEqualTo(MEXICO);
-            assertThat(game.getHomeTeam().getSide()).isEqualTo(Side.HOME);
             assertThat(game.getHomeTeam().getScore()).isZero();
             assertThat(game.getAwayTeam().getName()).isEqualTo(CANADA);
-            assertThat(game.getAwayTeam().getSide()).isEqualTo(Side.AWAY);
             assertThat(game.getAwayTeam().getScore()).isZero();
         });
     }
@@ -47,17 +44,15 @@ class ScoreboardTest {
 
         assertThat(Scoreboard.getGames()).anySatisfy(game -> {
             assertThat(game.getHomeTeam().getName()).isEqualTo(MEXICO);
-            assertThat(game.getHomeTeam().getSide()).isEqualTo(Side.HOME);
             assertThat(game.getHomeTeam().getScore()).isZero();
             assertThat(game.getAwayTeam().getName()).isEqualTo(CANADA);
-            assertThat(game.getAwayTeam().getSide()).isEqualTo(Side.AWAY);
             assertThat(game.getAwayTeam().getScore()).isZero();
         });
     }
 
     @Test
     void test_startGame_TeamIsNull() {
-        assertThatThrownBy(() -> Scoreboard.startGame(createHomeTeam(MEXICO), null))
+        assertThatThrownBy(() -> Scoreboard.startGame(createTeam(MEXICO), null))
                 .isInstanceOf(ScoreBoardException.class);
     }
 
@@ -74,7 +69,6 @@ class ScoreboardTest {
                 .isInstanceOf(ScoreBoardException.class);
     }
 
-    @Disabled
     @Test
     void test_startGame_NewGameForTheExistingTeamAfterPreviousGameFinished() throws ScoreBoardException {
         Scoreboard.startGame(SPAIN, MEXICO);
@@ -83,10 +77,8 @@ class ScoreboardTest {
 
         assertThat(Scoreboard.getGames()).anySatisfy(game -> {
             assertThat(game.getHomeTeam().getName()).isEqualTo(MEXICO);
-            assertThat(game.getHomeTeam().getSide()).isEqualTo(Side.HOME);
             assertThat(game.getHomeTeam().getScore()).isZero();
             assertThat(game.getAwayTeam().getName()).isEqualTo(CANADA);
-            assertThat(game.getAwayTeam().getSide()).isEqualTo(Side.AWAY);
             assertThat(game.getAwayTeam().getScore()).isZero();
         });
     }
@@ -98,15 +90,12 @@ class ScoreboardTest {
 
         assertThat(Scoreboard.getGames()).anySatisfy(game -> {
             assertThat(game.getHomeTeam().getName()).isEqualTo(MEXICO);
-            assertThat(game.getHomeTeam().getSide()).isEqualTo(Side.HOME);
             assertThat(game.getHomeTeam().getScore()).isOne();
             assertThat(game.getAwayTeam().getName()).isEqualTo(CANADA);
-            assertThat(game.getAwayTeam().getSide()).isEqualTo(Side.AWAY);
             assertThat(game.getAwayTeam().getScore()).isOne();
         });
     }
 
-    @Disabled
     @Test
     void test_updateScore_NonExistentOrFinishedGame() throws ScoreBoardException {
         Scoreboard.startGame(MEXICO, CANADA);
@@ -127,7 +116,6 @@ class ScoreboardTest {
                 .isInstanceOf(ScoreBoardException.class);
     }
 
-    @Disabled
     @Test
     void test_finishGame_successCase() throws ScoreBoardException {
         Scoreboard.startGame(MEXICO, CANADA);
@@ -136,7 +124,6 @@ class ScoreboardTest {
         assertThat(Scoreboard.getGames()).isEmpty();
     }
 
-    @Disabled
     @Test
     void test_finishGame_nonExistentOrFinishedGame() throws ScoreBoardException {
         Scoreboard.startGame(MEXICO, CANADA);
@@ -171,15 +158,7 @@ class ScoreboardTest {
                 "Spain 10 - Brazil 2", "Mexico 0 - Canada 5", "Argentina 3 - Australia 1", "Germany 2 - France 2");
     }
 
-    private Team createHomeTeam(String name) {
-        return createTeam(name, Side.HOME);
-    }
-
-    private Team createAwayTeam(String name) {
-        return createTeam(name, Side.AWAY);
-    }
-
-    private Team createTeam(String name, Side side) {
-        return Team.builder().name(name).side(side).build();
+    private Team createTeam(String name) {
+        return Team.builder().name(name).build();
     }
 }

@@ -2,7 +2,6 @@ package com.live.worldcup.scoreboard;
 
 import com.live.worldcup.scoreboard.exception.ScoreBoardException;
 import com.live.worldcup.scoreboard.model.Game;
-import com.live.worldcup.scoreboard.model.Side;
 import com.live.worldcup.scoreboard.model.Team;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
@@ -24,7 +23,7 @@ public class Scoreboard {
             throw new ScoreBoardException("Team names are not supposed to be null or empty");
         }
 
-        startGame(createHomeTeam(homeTeamName), createAwayTeam(awayTeamName));
+        startGame(createTeam(homeTeamName), createTeam(awayTeamName));
     }
 
     public static void startGame(Team homeTeam, Team awayTeam) throws ScoreBoardException {
@@ -59,7 +58,15 @@ public class Scoreboard {
         games.add(game);
     }
 
-    public static void finishGame(Game game) throws ScoreBoardException {}
+    public static void finishGame(Game game) throws ScoreBoardException {
+        if (!games.contains(game)) {
+            throw new ScoreBoardException("Game is either not existent or finished");
+        }
+
+        games.remove(game);
+        game.getHomeTeam().finishGame();
+        game.getAwayTeam().finishGame();
+    }
 
     public List<String> getSummary() {
         return Collections.emptyList();
@@ -77,16 +84,8 @@ public class Scoreboard {
         return new TreeSet<>(comparator);
     }
 
-
-    private static Team createHomeTeam(String name) {
-        return createTeam(name, Side.HOME);
-    }
-
-    private static Team createAwayTeam(String name) {
-        return createTeam(name, Side.AWAY);
-    }
-    private static Team createTeam(String name, Side side) {
-        return teams.stream().filter(team -> team.getName().equals(name)).findAny()
-                .orElse(Team.builder().name(name).side(side).build());
+    private static Team createTeam(String name) {
+        return teams.stream().filter(t -> t.getName().equals(name)).findAny()
+                .orElse(Team.builder().name(name).build());
     }
 }
